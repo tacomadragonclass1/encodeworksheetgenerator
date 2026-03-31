@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Phonics Worksheet Generator</title>
+  <link rel="stylesheet" href="styles/main.css" />
+</head>
+<body>
+
+<div id="app">
+
+  <!-- ── Sidebar ───────────────────────────────────────────────────────────── -->
+  <aside id="sidebar">
+    <h1>
+      Phonics Worksheet
+      <span>Generator</span>
+    </h1>
+
+    <!-- Tab nav -->
+    <div id="tab-nav">
+      <button class="tab-btn active" data-tab="generator">Generator</button>
+      <button class="tab-btn"        data-tab="developer">Developer</button>
+    </div>
+
+    <!-- ── Generator panel ─────────────────────────────────────────────────── -->
+    <div id="panel-generator">
+
+      <!-- Pattern selector -->
+      <div id="pattern-selector-wrap">
+        <div class="control-label">Phonics Patterns</div>
+        <div id="pattern-selector"><!-- built by JS --></div>
+        <div id="pattern-selection-count">0 patterns selected</div>
+      </div>
+
+      <!-- Problem count -->
+      <div class="control-group">
+        <div class="control-label">Number of Problems</div>
+        <div class="count-buttons">
+          <button class="count-btn" data-count="4">4</button>
+          <button class="count-btn" data-count="5">5</button>
+          <button class="count-btn active" data-count="6">6</button>
+          <button class="count-btn" data-count="7">7</button>
+          <button class="count-btn" data-count="8">8</button>
+        </div>
+      </div>
+
+      <!-- Word selector -->
+      <div id="word-list-wrap">
+        <div class="control-label">Select Words</div>
+        <div id="word-list-container" class="empty">
+          <p style="font-size:12px;color:#5a5a7a;text-align:center;">
+            Select patterns above
+          </p>
+        </div>
+        <div id="selection-badge"></div>
+      </div>
+
+      <!-- Generate -->
+      <button id="generate-btn" disabled>Generate Worksheet</button>
+
+    </div><!-- /#panel-generator -->
+
+    <!-- ── Developer panel ─────────────────────────────────────────────────── -->
+    <div id="panel-developer" style="display:none;">
+      <!-- filled by developer.js -->
+    </div>
+
+  </aside>
+
+  <!-- ── Preview / workspace area ──────────────────────────────────────────── -->
+  <main id="preview-area">
+
+    <!-- Generator: placeholder + worksheet -->
+    <div id="preview-placeholder">
+      <div class="icon">📋</div>
+      <p>Your worksheet will appear here</p>
+      <small>Select patterns, pick your words, and click Generate</small>
+    </div>
+
+    <div id="worksheet" style="display:none;"></div>
+
+    <!-- Developer: paste workspace -->
+    <div id="dev-workspace" style="display:none;">
+      <!-- filled by developer.js -->
+    </div>
+
+  </main>
+
+</div>
+
+<script type="module" src="src/app.js"></script>
+</body>
+</html>
