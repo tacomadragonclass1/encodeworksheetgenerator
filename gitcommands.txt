@@ -1,0 +1,28 @@
+WORKSHEET GENERATOR — GIT COMMANDS
+====================================
+
+ALWAYS start by navigating to the project folder:
+  cd "/home/milo/Coding Projects/claude/school/worksheetgenerator"
+
+
+--- DOWNLOAD changes from GitHub to laptop ---
+
+  git pull origin main
+
+
+--- UPLOAD changes from laptop to GitHub ---
+
+  git add .
+  git commit -m "describe what you changed"
+  git push origin main
+
+  Example commit messages:
+    git commit -m "Add clipart for bat and fox"
+    git commit -m "Fix word list bug"
+
+
+--- GOOD HABITS ---
+
+  - Pull before you start working
+  - Push when you are done
+  - GitHub Pages takes 1-3 minutes to update after a push
