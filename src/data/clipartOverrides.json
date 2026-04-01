@@ -63,5 +63,6 @@
   "web": "word_web.png",
   "worm": "word_worm.png",
   "yum": "word_yum.png",
-  "ran": "word_ran.png"
+  "ran": "word_ran.png",
+  "tag": "word_tag.png"
 }
