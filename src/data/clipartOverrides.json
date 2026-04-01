@@ -66,5 +66,6 @@
   "ran": "word_ran.png",
   "tag": "word_tag.png",
   "ham": "word_ham.png",
-  "yam": "word_yam.png"
+  "yam": "word_yam.png",
+  "pat": "word_pat.png"
 }
