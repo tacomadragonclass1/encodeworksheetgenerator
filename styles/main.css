@@ -155,36 +155,6 @@ body {
 
 #pattern-selection-count.has-selection { color: #9d98ff; font-weight: 600; }
 
-/* ── Problem count ──────────────────────────────────────────────────────── */
-.count-buttons {
-  display: flex;
-  gap: 6px;
-}
-
-.count-btn {
-  flex: 1;
-  padding: 9px 0;
-  background: #1e1e3a;
-  border: 1.5px solid #44446a;
-  color: #b0b0d8;
-  border-radius: 7px;
-  font-size: 15px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: background 0.15s, color 0.15s, border-color 0.15s;
-}
-
-.count-btn.active {
-  background: #6c63ff;
-  border-color: #8880ff;
-  color: #fff;
-}
-
-.count-btn:hover:not(.active) {
-  background: #2a2a4a;
-  color: #e8e8ff;
-  border-color: #7070aa;
-}
 
 /* ── Word list ──────────────────────────────────────────────────────────── */
 #word-list-wrap {
@@ -274,6 +244,38 @@ body {
 #word-list-container::-webkit-scrollbar { width: 5px; }
 #word-list-container::-webkit-scrollbar-track { background: transparent; }
 #word-list-container::-webkit-scrollbar-thumb { background: #4a4a70; border-radius: 3px; }
+
+/* ── Worksheet type toggle ──────────────────────────────────────────────── */
+.mode-buttons {
+  display: flex;
+  gap: 6px;
+}
+
+.mode-btn {
+  flex: 1;
+  padding: 9px 0;
+  background: #1e1e3a;
+  border: 1.5px solid #44446a;
+  color: #b0b0d8;
+  border-radius: 7px;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.mode-btn.active {
+  background: #6c63ff;
+  border-color: #8880ff;
+  color: #fff;
+}
+
+.mode-btn:hover:not(.active) {
+  background: #2a2a4a;
+  color: #e8e8ff;
+  border-color: #7070aa;
+}
 
 /* ── Generate button ────────────────────────────────────────────────────── */
 #generate-btn {
@@ -818,16 +820,69 @@ body {
   background: #efefef;
   border-radius: 2px;
   flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
 }
 
 .sound-box.vowel  { background: #f8f8f4; }
 .sound-box.double { width: 116px; }   /* 56 + 4 gap + 56 */
+
+/* Letter inside sound box (decode mode) */
+.sound-box-letter {
+  font-family: 'KGPrimaryDots', monospace;
+  color: #1a1a2e;
+  line-height: 1;
+  user-select: none;
+}
+
+/* ── Decode row layout ──────────────────────────────────────────────────── */
 
 /* Writing lines — stretches to match sound-box group height */
 .writing-lines-cell {
   flex: 1;
   min-width: 0;
   display: flex;
+}
+
+/* ── Decode row layout ──────────────────────────────────────────────────── */
+
+/* Two-column grid: left group auto-sized, image always fixed at far right. */
+.worksheet-row.worksheet-row--decode {
+  display: grid;
+  grid-template-columns: 1fr 96px;
+  column-gap: 20px;
+  align-items: stretch;   /* decode-left stretches to row height so its border aligns */
+  border-bottom: none;
+}
+
+/* Left group: sound boxes + writing lines */
+.decode-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-right: 50px;
+  border-bottom: 1px solid #e8e8e8;
+}
+
+.worksheet-row.worksheet-row--decode:last-child .decode-left {
+  border-bottom: none;
+}
+
+.decode-left--long {
+  zoom: 0.7;
+}
+
+/* Stretch to fill remaining row space; height matches sound boxes */
+.worksheet-row.worksheet-row--decode .writing-lines-cell {
+  flex: 1;
+  height: 80px;
+}
+
+/* Vertically center the image in its grid cell */
+.worksheet-row.worksheet-row--decode .clipart-cell {
+  align-self: center;
 }
 
 .writing-lines-img {

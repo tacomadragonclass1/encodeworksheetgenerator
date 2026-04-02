@@ -9,8 +9,8 @@ const overrides = new Map();
 // ── State ────────────────────────────────────────────────────────────────────
 const state = {
   selectedPatternIds: new Set(),
-  problemCount: 6,
   selectedWords: [],
+  mode: 'encode',
 };
 
 // ── DOM refs ─────────────────────────────────────────────────────────────────
@@ -21,7 +21,7 @@ const selectionBadge     = document.getElementById('selection-badge');
 const generateBtn        = document.getElementById('generate-btn');
 const previewPlaceholder = document.getElementById('preview-placeholder');
 const worksheet          = document.getElementById('worksheet');
-const countButtons       = document.querySelectorAll('.count-btn');
+const modeButtons        = document.querySelectorAll('.mode-btn');
 
 // Tab elements
 const tabBtns       = document.querySelectorAll('.tab-btn');
@@ -87,7 +87,7 @@ function onOverrideSaved(word, _filename) {
 async function init() {
   await loadOverrides();
   buildPatternPanel();
-  setupCountButtons();
+  setupModeButtons();
   generateBtn.addEventListener('click', onGenerate);
   tabBtns.forEach(btn => btn.addEventListener('click', () => switchTab(btn.dataset.tab)));
   updateGenerateButton();
@@ -203,7 +203,7 @@ function buildWordMap() {
       if (!map[w.word]) {
         const hasImage = w.hasClipart || overrides.has(w.word);
         const image    = w.image || overrides.get(w.word) || null;
-        map[w.word]    = { ...w, hasClipart: hasImage, image };
+        map[w.word]    = { ...w, hasClipart: hasImage, image, category: pat.category };
       }
     }
   }
@@ -283,18 +283,13 @@ function renderWordList() {
 }
 
 function updateBadge() {
-  const n      = state.selectedWords.length;
-  const needed = state.problemCount;
-
+  const n = state.selectedWords.length;
   if (n === 0) {
     selectionBadge.textContent = '';
     return;
   }
-  if (n < needed) {
-    selectionBadge.textContent = `${n} selected — need ${needed - n} more`;
-    selectionBadge.style.color = '#ffaa66';
-  } else if (n > needed) {
-    selectionBadge.textContent = `${n} selected — first ${needed} will be used`;
+  if (n > 10) {
+    selectionBadge.textContent = `${n} selected — first 10 will be used`;
     selectionBadge.style.color = '#66aaff';
   } else {
     selectionBadge.textContent = `${n} selected — ready!`;
@@ -302,18 +297,18 @@ function updateBadge() {
   }
 }
 
-// ── Problem count ─────────────────────────────────────────────────────────────
-function setupCountButtons() {
-  countButtons.forEach(btn => {
+// ── Worksheet mode (encode / decode) ─────────────────────────────────────────
+function setupModeButtons() {
+  modeButtons.forEach(btn => {
     btn.addEventListener('click', () => {
-      state.problemCount = parseInt(btn.dataset.count, 10);
-      countButtons.forEach(b => b.classList.toggle('active', b === btn));
-      updateBadge();
-      updateGenerateButton();
+      if (btn.dataset.mode === state.mode) return;
+      state.mode = btn.dataset.mode;
+      modeButtons.forEach(b => b.classList.toggle('active', b === btn));
+      // Clear any displayed worksheet so it doesn't misrepresent the new mode
+      worksheet.innerHTML     = '';
+      worksheet.style.display = 'none';
+      previewPlaceholder.style.display = '';
     });
-  });
-  countButtons.forEach(b => {
-    b.classList.toggle('active', parseInt(b.dataset.count, 10) === state.problemCount);
   });
 }
 
@@ -327,19 +322,14 @@ function updateGenerateButton() {
 function onGenerate() {
   if (state.selectedPatternIds.size === 0) return;
 
-  let words        = [...state.selectedWords];
-  const needed     = state.problemCount;
-
-  if (words.length < needed) {
-    const original = [...words];
-    let i = 0;
-    while (words.length < needed) { words.push(original[i++ % original.length]); }
-  } else {
-    words = words.slice(0, needed);
-  }
+  const words = state.selectedWords.slice(0, 10);
 
   const wordMap = buildWordMap();
-  renderWorksheet(words, wordMap);
+  if (state.mode === 'decode') {
+    renderWorksheetDecode(words, wordMap);
+  } else {
+    renderWorksheet(words, wordMap);
+  }
 }
 
 // ── Worksheet render ──────────────────────────────────────────────────────────
@@ -361,7 +351,7 @@ function buildRow(entry) {
 
   const boxesAndLines = document.createElement('div');
   boxesAndLines.className = 'boxes-and-lines';
-  boxesAndLines.appendChild(buildSoundBoxes(entry.word));
+  boxesAndLines.appendChild(buildSoundBoxes(entry.word, entry.category));
   boxesAndLines.appendChild(buildWritingLines());
   row.appendChild(boxesAndLines);
 
@@ -395,15 +385,25 @@ function buildClipartCell(entry) {
   return cell;
 }
 
-function buildSoundBoxes(word) {
+function buildSoundBoxes(word, category, showLetters = false) {
   const container = document.createElement('div');
   container.className = 'sound-boxes';
 
-  for (const g of getGraphemes(word)) {
+  for (const g of getGraphemes(word, category === 'CVCe')) {
     const box = document.createElement('div');
     box.className = 'sound-box';
     if (g.isVowel)  box.classList.add('vowel');
     if (g.isDouble) box.classList.add('double');
+
+    if (showLetters) {
+      const span = document.createElement('span');
+      span.className = 'sound-box-letter';
+      const len = g.grapheme.length;
+      span.style.fontSize = len <= 2 ? '100px' : '68px';
+      span.textContent = g.grapheme;
+      box.appendChild(span);
+    }
+
     container.appendChild(box);
   }
 
@@ -421,6 +421,64 @@ function buildWritingLines() {
   cell.appendChild(img);
 
   return cell;
+}
+
+// ── Decode worksheet ──────────────────────────────────────────────────────────
+
+/**
+ * Sattolo's algorithm — returns a new array that is a derangement of the
+ * input (guaranteed: no element stays at its original index).
+ */
+function derange(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    // j in [0, i) — the strict upper bound is what makes it a single cycle
+    const j = Math.floor(Math.random() * i);
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function renderWorksheetDecode(words, wordMap) {
+  previewPlaceholder.style.display = 'none';
+  worksheet.style.display          = 'block';
+  worksheet.innerHTML              = '';
+
+  const entries = words.map(w => wordMap[w] || { word: w, hasClipart: false, image: null, category: '' });
+  const images  = entries.map(e => e.image);
+  const shuffled = derange(images);
+
+  for (let i = 0; i < entries.length; i++) {
+    worksheet.appendChild(buildDecodeRow(entries[i], shuffled[i]));
+  }
+}
+
+function buildDecodeRow(entry, shuffledImage) {
+  const row = document.createElement('div');
+  row.className = 'worksheet-row worksheet-row--decode';
+
+  // Left: sound boxes with letters + blank writing lines
+  const decodeLeft = document.createElement('div');
+  decodeLeft.className = entry.word.length >= 5
+    ? 'decode-left decode-left--long'
+    : 'decode-left';
+  decodeLeft.appendChild(buildSoundBoxes(entry.word, entry.category, true));
+  decodeLeft.appendChild(buildWritingLines());
+  row.appendChild(decodeLeft);
+
+  // Right: shuffled image (belongs to a different word, pinned to far right by CSS)
+  const cell = document.createElement('div');
+  cell.className = 'clipart-cell';
+  if (shuffledImage) {
+    const img    = document.createElement('img');
+    img.src      = `public/images/${shuffledImage}`;
+    img.alt      = '';
+    img.loading  = 'lazy';
+    cell.appendChild(img);
+  }
+  row.appendChild(cell);
+
+  return row;
 }
 
 // ── Boot ──────────────────────────────────────────────────────────────────────

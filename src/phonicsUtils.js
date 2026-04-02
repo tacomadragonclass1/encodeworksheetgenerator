@@ -6,6 +6,10 @@
  *
  * isDouble  → render as a double-wide box
  * isVowel   → render with off-white (almost-white) background
+ *
+ * isCVCe flag: when true, the trailing silent 'e' is merged into the
+ * preceding consonant box (making it double-wide) rather than getting
+ * its own single box, since the silent e has no individual sound.
  */
 
 // Consonant digraphs — two letters, one consonant sound → double box
@@ -29,7 +33,7 @@ const VOWELS = new Set(['a', 'e', 'i', 'o', 'u']);
 /**
  * Returns an ordered array of grapheme objects for the given word.
  */
-export function getGraphemes(word) {
+export function getGraphemes(word, isCVCe = false) {
   const result = [];
   const lower = word.toLowerCase();
   let i = 0;
@@ -73,6 +77,16 @@ export function getGraphemes(word) {
       isDouble: false,
     });
     i++;
+  }
+
+  // CVCe: merge trailing silent 'e' into the preceding consonant box
+  if (isCVCe && result.length >= 2) {
+    const last = result[result.length - 1];
+    if (last.grapheme.toLowerCase() === 'e' && !last.isDouble) {
+      result.pop();
+      result[result.length - 1].isDouble = true;
+      result[result.length - 1].grapheme += last.grapheme; // e.g. 'k' → 'ke'
+    }
   }
 
   return result;

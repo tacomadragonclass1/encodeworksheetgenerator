@@ -317,9 +317,9 @@ export const phonicsData = {
     {
       "id": "cvc-short-a-families-ack",
       "displayName": "Short A Families  -ack",
-      "category": "CVC",
+      "category": "Ending Blends",
       "family": "Short A Families",
-      "templateType": "cvc",
+      "templateType": "blends",
       "rime": "-ack",
       "words": [
         {
@@ -377,9 +377,9 @@ export const phonicsData = {
     {
       "id": "cvc-short-a-families-ang",
       "displayName": "Short A Families  -ang",
-      "category": "CVC",
+      "category": "Ending Blends",
       "family": "Short A Families",
-      "templateType": "cvc",
+      "templateType": "blends",
       "rime": "-ang",
       "words": [
         {
@@ -416,9 +416,9 @@ export const phonicsData = {
     {
       "id": "cvc-short-a-families-ank",
       "displayName": "Short A Families  -ank",
-      "category": "CVC",
+      "category": "Ending Blends",
       "family": "Short A Families",
-      "templateType": "cvc",
+      "templateType": "blends",
       "rime": "-ank",
       "words": [
         {
@@ -641,9 +641,9 @@ export const phonicsData = {
     {
       "id": "cvc-short-e-families-est",
       "displayName": "Short E Families  -est",
-      "category": "CVC",
+      "category": "Ending Blends",
       "family": "Short E Families",
-      "templateType": "cvc",
+      "templateType": "blends",
       "rime": "-est",
       "words": [
         {
@@ -692,9 +692,9 @@ export const phonicsData = {
     {
       "id": "cvc-short-e-families-end",
       "displayName": "Short E Families  -end",
-      "category": "CVC",
+      "category": "Ending Blends",
       "family": "Short E Families",
-      "templateType": "cvc",
+      "templateType": "blends",
       "rime": "-end",
       "words": [
         {
@@ -1057,9 +1057,9 @@ export const phonicsData = {
     {
       "id": "cvc-short-i-families-ill",
       "displayName": "Short I Families  -ill",
-      "category": "CVC",
+      "category": "Ending Blends",
       "family": "Short I Families",
-      "templateType": "cvc",
+      "templateType": "blends",
       "rime": "-ill",
       "words": [
         {
@@ -1128,9 +1128,9 @@ export const phonicsData = {
     {
       "id": "cvc-short-i-families-ing",
       "displayName": "Short I Families  -ing",
-      "category": "CVC",
+      "category": "Ending Blends",
       "family": "Short I Families",
-      "templateType": "cvc",
+      "templateType": "blends",
       "rime": "-ing",
       "words": [
         {
@@ -1195,9 +1195,9 @@ export const phonicsData = {
     {
       "id": "cvc-short-i-families-ink",
       "displayName": "Short I Families  -ink",
-      "category": "CVC",
+      "category": "Ending Blends",
       "family": "Short I Families",
-      "templateType": "cvc",
+      "templateType": "blends",
       "rime": "-ink",
       "words": [
         {
@@ -1505,9 +1505,9 @@ export const phonicsData = {
     {
       "id": "cvc-short-o-families-ong",
       "displayName": "Short O Families  -ong",
-      "category": "CVC",
+      "category": "Ending Blends",
       "family": "Short O Families",
-      "templateType": "cvc",
+      "templateType": "blends",
       "rime": "-ong",
       "words": [
         {
@@ -1756,9 +1756,9 @@ export const phonicsData = {
     {
       "id": "cvc-short-u-families-uck",
       "displayName": "Short U Families  -uck",
-      "category": "CVC",
+      "category": "Ending Blends",
       "family": "Short U Families",
-      "templateType": "cvc",
+      "templateType": "blends",
       "rime": "-uck",
       "words": [
         {
@@ -1812,9 +1812,9 @@ export const phonicsData = {
     {
       "id": "cvc-short-u-families-unk",
       "displayName": "Short U Families  -unk",
-      "category": "CVC",
+      "category": "Ending Blends",
       "family": "Short U Families",
-      "templateType": "cvc",
+      "templateType": "blends",
       "rime": "-unk",
       "words": [
         {
@@ -1868,9 +1868,9 @@ export const phonicsData = {
     {
       "id": "cvc-short-u-families-ump",
       "displayName": "Short U Families  -ump",
-      "category": "CVC",
+      "category": "Ending Blends",
       "family": "Short U Families",
-      "templateType": "cvc",
+      "templateType": "blends",
       "rime": "-ump",
       "words": [
         {
