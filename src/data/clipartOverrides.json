@@ -73,5 +73,6 @@
   "flat": "word_flat.png",
   "dab": "word_dab.png",
   "zip": "word_zip.png",
-  "trip": "word_trip.png"
+  "trip": "word_trip.png",
+  "skip": "word_skip.png"
 }
