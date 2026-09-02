@@ -77,5 +77,6 @@
   "skip": "word_skip.png",
   "coat": "word_coat.png",
   "hit": "word_hit.png",
-  "vat": "word_vat.png"
+  "vat": "word_vat.png",
+  "clam": "word_clam.png"
 }
