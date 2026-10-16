@@ -399,7 +399,7 @@ function buildSoundBoxes(word, category, showLetters = false) {
       const span = document.createElement('span');
       span.className = 'sound-box-letter';
       const len = g.grapheme.length;
-      span.style.fontSize = len <= 2 ? '100px' : '68px';
+      span.style.fontSize = len <= 2 ? '97px' : '68px';
       span.textContent = g.grapheme;
       box.appendChild(span);
     }

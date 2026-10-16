@@ -815,7 +815,7 @@ body {
 
 .sound-box {
   width: 56px;
-  height: 80px;
+  height: 84px;
   border: 2.5px solid #325490;
   background: #efefef;
   border-radius: 2px;
@@ -835,6 +835,14 @@ body {
   color: #1a1a2e;
   line-height: 1;
   user-select: none;
+  position: relative;
+  /* KGPrimaryDots reserves 0.2373em of descent but its deepest glyph ('y')
+     only uses 0.1807em. Flex centering centers that oversized metric box,
+     which parks the baseline 0.0513em too low and clips the tails of
+     g p q y j. Lift every letter by the same amount so the shared baseline
+     across the sound boxes is preserved exactly. In em so it stays correct
+     at both font sizes set in app.js. */
+  top: -0.0513em;
 }
 
 /* ── Decode row layout ──────────────────────────────────────────────────── */
@@ -877,7 +885,7 @@ body {
 /* Stretch to fill remaining row space; height matches sound boxes */
 .worksheet-row.worksheet-row--decode .writing-lines-cell {
   flex: 1;
-  height: 80px;
+  height: 84px;
 }
 
 /* Vertically center the image in its grid cell */
