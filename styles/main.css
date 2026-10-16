@@ -814,7 +814,7 @@ body {
 }
 
 .sound-box {
-  width: 56px;
+  width: 62px;
   height: 84px;
   border: 2.5px solid #325490;
   background: #efefef;
@@ -827,7 +827,7 @@ body {
 }
 
 .sound-box.vowel  { background: #f8f8f4; }
-.sound-box.double { width: 116px; }   /* 56 + 4 gap + 56 */
+.sound-box.double { width: 128px; }   /* 62 + 4 gap + 62 */
 
 /* Letter inside sound box (decode mode) */
 .sound-box-letter {
