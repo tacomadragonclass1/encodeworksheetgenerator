@@ -2,7 +2,7 @@ WORKSHEET GENERATOR — GIT COMMANDS
 ====================================
 
 ALWAYS start by navigating to the project folder:
-  cd "/home/milo/Coding Projects/claude/school/worksheetgenerator"
+  cd "~/Coding Projects/claude/school/worksheetgenerator"
 
 
 --- DOWNLOAD changes from GitHub to laptop ---
