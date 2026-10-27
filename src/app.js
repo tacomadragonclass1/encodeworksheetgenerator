@@ -21,7 +21,7 @@ const selectionBadge     = document.getElementById('selection-badge');
 const generateBtn        = document.getElementById('generate-btn');
 const previewPlaceholder = document.getElementById('preview-placeholder');
 const worksheet          = document.getElementById('worksheet');
-const modeButtons        = document.querySelectorAll('.mode-btn');
+const modeSelect         = document.getElementById('mode-select');
 
 // Tab elements
 const tabBtns       = document.querySelectorAll('.tab-btn');
@@ -87,7 +87,7 @@ function onOverrideSaved(word, _filename) {
 async function init() {
   await loadOverrides();
   buildPatternPanel();
-  setupModeButtons();
+  setupModeSelect();
   generateBtn.addEventListener('click', onGenerate);
   tabBtns.forEach(btn => btn.addEventListener('click', () => switchTab(btn.dataset.tab)));
   updateGenerateButton();
@@ -297,18 +297,14 @@ function updateBadge() {
   }
 }
 
-// ── Worksheet mode (encode / decode) ─────────────────────────────────────────
-function setupModeButtons() {
-  modeButtons.forEach(btn => {
-    btn.addEventListener('click', () => {
-      if (btn.dataset.mode === state.mode) return;
-      state.mode = btn.dataset.mode;
-      modeButtons.forEach(b => b.classList.toggle('active', b === btn));
-      // Clear any displayed worksheet so it doesn't misrepresent the new mode
-      worksheet.innerHTML     = '';
-      worksheet.style.display = 'none';
-      previewPlaceholder.style.display = '';
-    });
+// ── Worksheet mode (encode / decode / onset / vowel / final) ─────────────────
+function setupModeSelect() {
+  modeSelect.addEventListener('change', () => {
+    state.mode = modeSelect.value;
+    // Clear any displayed worksheet so it doesn't misrepresent the new mode
+    worksheet.innerHTML     = '';
+    worksheet.style.display = 'none';
+    previewPlaceholder.style.display = '';
   });
 }
 
@@ -332,6 +328,20 @@ function onGenerate() {
   }
 }
 
+// ── Missing-sound modes ───────────────────────────────────────────────────────
+// Returns the set of grapheme indexes to leave blank for onset/vowel/final modes.
+function getBlankIndexes(word, category, mode) {
+  const gs = getGraphemes(word, category === 'CVCe');
+  let v = gs.findIndex(g => g.isVowel);
+  if (v === -1) v = gs.findIndex(g => g.grapheme.toLowerCase() === 'y');  // cry, my
+  switch (mode) {
+    case 'onset': return new Set(v > 0 ? Array.from({ length: v }, (_, i) => i) : []);
+    case 'vowel': return new Set(v >= 0 ? [v] : []);
+    case 'final': return new Set([gs.length - 1]);
+    default:      return new Set();
+  }
+}
+
 // ── Worksheet render ──────────────────────────────────────────────────────────
 function renderWorksheet(words, wordMap) {
   previewPlaceholder.style.display = 'none';
@@ -345,13 +355,16 @@ function renderWorksheet(words, wordMap) {
 }
 
 function buildRow(entry) {
+  const missing = ['onset', 'vowel', 'final'].includes(state.mode);
   const row = document.createElement('div');
   row.className = 'worksheet-row';
   row.appendChild(buildClipartCell(entry));
 
   const boxesAndLines = document.createElement('div');
   boxesAndLines.className = 'boxes-and-lines';
-  boxesAndLines.appendChild(buildSoundBoxes(entry.word, entry.category));
+  boxesAndLines.appendChild(missing
+    ? buildSoundBoxes(entry.word, entry.category, true, getBlankIndexes(entry.word, entry.category, state.mode))
+    : buildSoundBoxes(entry.word, entry.category));
   boxesAndLines.appendChild(buildWritingLines());
   row.appendChild(boxesAndLines);
 
@@ -385,17 +398,17 @@ function buildClipartCell(entry) {
   return cell;
 }
 
-function buildSoundBoxes(word, category, showLetters = false) {
+function buildSoundBoxes(word, category, showLetters = false, blanks = new Set()) {
   const container = document.createElement('div');
   container.className = 'sound-boxes';
 
-  for (const g of getGraphemes(word, category === 'CVCe')) {
+  getGraphemes(word, category === 'CVCe').forEach((g, idx) => {
     const box = document.createElement('div');
     box.className = 'sound-box';
     if (g.isVowel)  box.classList.add('vowel');
     if (g.isDouble) box.classList.add('double');
 
-    if (showLetters) {
+    if (showLetters && !blanks.has(idx)) {
       const span = document.createElement('span');
       span.className = 'sound-box-letter';
       const len = g.grapheme.length;
@@ -405,7 +418,7 @@ function buildSoundBoxes(word, category, showLetters = false) {
     }
 
     container.appendChild(box);
-  }
+  });
 
   return container;
 }

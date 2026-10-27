@@ -246,35 +246,22 @@ body {
 #word-list-container::-webkit-scrollbar-thumb { background: #4a4a70; border-radius: 3px; }
 
 /* ── Worksheet type toggle ──────────────────────────────────────────────── */
-.mode-buttons {
-  display: flex;
-  gap: 6px;
-}
-
-.mode-btn {
-  flex: 1;
-  padding: 9px 0;
+#mode-select {
+  width: 100%;
+  padding: 9px 10px;
   background: #1e1e3a;
   border: 1.5px solid #44446a;
-  color: #b0b0d8;
+  color: #e8e8ff;
   border-radius: 7px;
   font-family: 'Segoe UI', system-ui, sans-serif;
   font-size: 14px;
-  font-weight: 700;
   cursor: pointer;
-  transition: background 0.15s, color 0.15s, border-color 0.15s;
 }
 
-.mode-btn.active {
-  background: #6c63ff;
+#mode-select:hover,
+#mode-select:focus {
   border-color: #8880ff;
-  color: #fff;
-}
-
-.mode-btn:hover:not(.active) {
-  background: #2a2a4a;
-  color: #e8e8ff;
-  border-color: #7070aa;
+  outline: none;
 }
 
 /* ── Generate button ────────────────────────────────────────────────────── */

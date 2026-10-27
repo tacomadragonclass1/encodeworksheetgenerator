@@ -26,6 +26,18 @@
     <!-- ── Generator panel ─────────────────────────────────────────────────── -->
     <div id="panel-generator">
 
+      <!-- Worksheet type -->
+      <div class="control-group">
+        <label class="control-label" for="mode-select">Worksheet Type</label>
+        <select id="mode-select">
+          <option value="encode">Encode</option>
+          <option value="decode">Decode</option>
+          <option value="onset">Onset</option>
+          <option value="vowel">Vowel</option>
+          <option value="final">Final Sound</option>
+        </select>
+      </div>
+
       <!-- Pattern selector -->
       <div id="pattern-selector-wrap">
         <div class="control-label">Phonics Patterns</div>
@@ -42,15 +54,6 @@
           </p>
         </div>
         <div id="selection-badge"></div>
-      </div>
-
-      <!-- Worksheet type -->
-      <div class="control-group">
-        <div class="control-label">Worksheet Type</div>
-        <div class="mode-buttons">
-          <button class="mode-btn active" data-mode="encode">Encode</button>
-          <button class="mode-btn"        data-mode="decode">Decode</button>
-        </div>
       </div>
 
       <!-- Generate -->
